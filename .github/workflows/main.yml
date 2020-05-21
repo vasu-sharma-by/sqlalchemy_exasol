@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "test_github_action" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "test_github_action" ]
 
 
 
@@ -77,4 +77,11 @@ jobs:
       env:
         ODBCSYSINI: "${{ github.workspace }}/odbcconfig"
         TESTDB: "exa+${{ matrix.connector }}://sys:exasol@localhost:8888/TEST?CONNECTIONLCALL=en_US.UTF-8&DRIVER=EXAODBC"
+
+    - name: Push package to Test Pypi
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.pypi_password }}
+        repository_url: https://test.pypi.org/legacy/
 
