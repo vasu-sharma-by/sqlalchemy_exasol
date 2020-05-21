@@ -77,6 +77,9 @@ jobs:
       env:
         ODBCSYSINI: "${{ github.workspace }}/odbcconfig"
         TESTDB: "exa+${{ matrix.connector }}://sys:exasol@localhost:8888/TEST?CONNECTIONLCALL=en_US.UTF-8&DRIVER=EXAODBC"
+        
+    - name: Build sdist and wheel packages
+      run: python setup.py sdist bdist_wheel
 
     - name: Push package to Test Pypi
       uses: pypa/gh-action-pypi-publish@master
