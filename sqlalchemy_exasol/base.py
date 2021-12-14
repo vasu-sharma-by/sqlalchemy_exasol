@@ -343,10 +343,9 @@ class EXAExecutionContext(default.DefaultExecutionContext):
         """
         This routine inserts the parameters into the compiled query prior to executing it.
         The reason for this workaround is the poor performance for prepared statements.
-        Note: Parameter replacement is done for server versions < 4.1.8 or
-              in case a delete query is executed.
+        Note: Parameter replacement is done in case a delete query is executed.
         """
-        if self.isdelete or self.root_connection.dialect.server_version_info < (4, 1, 8):
+        if self.isdelete:
             db_query = self.unicode_statement
             for i in range(1, len(self.parameters)):
                 db_query += ", (" + ", ".join(['?'] * len(self.parameters[i])) + ")"
