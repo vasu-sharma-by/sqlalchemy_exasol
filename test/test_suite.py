@@ -10,6 +10,8 @@ from sqlalchemy.testing.suite import NumericTest \
     as _NumericTest
 from sqlalchemy.testing.suite import QuotedNameArgumentTest \
     as _QuotedNameArgumentTest
+from sqlalchemy.testing.suite import  LongNameBlowoutTest \
+    as _LongNameBlowoutTest
 
 
 class CompoundSelectTest(_CompoundSelectTest):
@@ -81,4 +83,11 @@ class QuotedNameArgumentTest(_QuotedNameArgumentTest):
 
     @pytest.mark.skip()
     def test_get_check_constraints(self, name):
+        return
+
+
+class LongNameBlowoutTest(_LongNameBlowoutTest):
+
+    """ Skip this test as EXASOL only allows 128 characters for identifiers"""
+    def test_long_convention_name(self):
         return
