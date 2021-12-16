@@ -95,8 +95,9 @@ def visit_merge(element, compiler, **kw):
                                            asfrom=True)
     msql += "ON ( %s ) " % compiler.process(element._on)
 
+    compile_state = CompileState.plugin_for("default", "insert")
+
     if element._merge_update_values is not None:
-        compile_state = CompileState.plugin_for("default", "insert")
         cols = crud._get_crud_params(compiler, element._merge_update_values, compile_state)
         msql += "\nWHEN MATCHED THEN UPDATE SET "
         msql += ', '.join(compiler.visit_column(c[0]) + '=' + c[1] for c in cols)
@@ -113,7 +114,7 @@ def visit_merge(element, compiler, **kw):
             if element._delete_where is not None:
                 msql += "WHERE %s" % compiler.process(element._delete_where)
     if element._merge_insert_values is not None:
-        cols = crud._get_crud_params(compiler, element._merge_insert_values)
+        cols = crud._get_crud_params(compiler, element._merge_insert_values, compile_state)
         msql += "\nWHEN NOT MATCHED THEN INSERT "
         msql += "(%s) " % ", ".join(compiler.visit_column(c[0]) for c in cols)
         msql += "VALUES (%s) " % ", ".join(c[1] for c in cols)
