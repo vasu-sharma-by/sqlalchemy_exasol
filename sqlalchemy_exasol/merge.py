@@ -95,7 +95,10 @@ def visit_merge(element, compiler, **kw):
                                            asfrom=True)
     msql += "ON ( %s ) " % compiler.process(element._on)
 
-    compile_state = CompileState(msql, compiler)
+    # compile_state = CompileState(msql, compiler)
+    compile_state = msql._compile_state_factory(
+        msql, compiler, **kw
+    )
 
     if element._merge_update_values is not None:
         cols = crud._get_crud_params(compiler, element._merge_update_values, compile_state)
